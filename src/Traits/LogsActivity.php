@@ -10,6 +10,7 @@ use Illuminate\Support\Collection;
 use Spatie\Activitylog\ActivityLogger;
 use Spatie\Activitylog\ActivitylogServiceProvider;
 use Spatie\Activitylog\ActivityLogStatus;
+use Illuminate\Support\Facades\Auth;
 
 trait LogsActivity
 {
@@ -36,6 +37,10 @@ trait LogsActivity
                 $attrs = $model->attributeValuesToBeLogged($eventName);
 
                 if ($model->isLogEmpty($attrs) && ! $model->shouldSubmitEmptyLogs()) {
+                    return;
+                }
+
+                if(Auth::guest()){
                     return;
                 }
 
